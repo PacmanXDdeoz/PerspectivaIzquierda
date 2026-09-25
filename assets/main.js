@@ -94,4 +94,51 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+
+  /* ---------- Modal de aviso (assets/aviso.jpeg) ----------
+     Ventana emergente oculta por defecto. Se abre automáticamente al cargar
+     la página y se cierra al: pulsar la (X) de la esquina superior derecha,
+     hacer clic en el fondo/overlay (fuera del contenido) o pulsar Escape.
+     Añadido 2026-09-25. JavaScript vainilla, sin dependencias externas. */
+  const initAvisoModal = () => {
+    const modal = document.querySelector("[data-modal]");
+    if (!modal) return;
+
+    const closeBtn = modal.querySelector(".pi-modal__close");
+    let lastFocused = null;
+
+    const openModal = () => {
+      lastFocused = document.activeElement;
+      modal.classList.add("is-open");
+      document.body.classList.add("modal-open");
+      // Enfocamos el botón de cierre para facilitar el uso con teclado.
+      if (closeBtn) closeBtn.focus();
+    };
+
+    const closeModal = () => {
+      modal.classList.remove("is-open");
+      document.body.classList.remove("modal-open");
+      // Devolvemos el foco al elemento previo por accesibilidad.
+      if (lastFocused && typeof lastFocused.focus === "function") {
+        lastFocused.focus();
+      }
+    };
+
+    // Cierre con la (X) y con el overlay: ambos llevan [data-modal-close].
+    modal.querySelectorAll("[data-modal-close]").forEach((el) => {
+      el.addEventListener("click", closeModal);
+    });
+
+    // Cierre con la tecla Escape (solo si el modal está abierto).
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && modal.classList.contains("is-open")) {
+        closeModal();
+      }
+    });
+
+    // Apertura automática al cargar la página.
+    openModal();
+  };
+
+  initAvisoModal();
 });

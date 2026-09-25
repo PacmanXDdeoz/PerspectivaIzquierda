@@ -683,6 +683,108 @@ body.menu-open { overflow: hidden; }
 }
 .dark .sg-swatch .copy { color: var(--pi-gold); }
 
+/* ---------- Modal de aviso (assets/aviso.jpeg) ---------- */
+/* Componente reutilizable: oculto por defecto, se muestra con la clase `.is-open`.
+   Añadido 2026-09-25. No altera los estilos existentes. */
+.pi-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none; /* oculto por defecto */
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.pi-modal.is-open { display: flex; }
+
+/* Fondo/overlay: también cierra el modal (data-modal-close en el HTML). */
+.pi-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 5, 5, 0.82);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  animation: pi-modal-fade .3s ease both;
+}
+
+/* Contenido principal (imagen). */
+.pi-modal__content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pi-modal-rise .35s cubic-bezier(.2,.8,.2,1) both;
+}
+
+.pi-modal__image {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+  border: 3px solid var(--pi-gold);
+  background: var(--pi-night-2);
+}
+
+/* Botón de cierre (X) en la esquina superior derecha. */
+.pi-modal__close {
+  position: absolute;
+  top: -18px;
+  right: -18px;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 2px solid var(--pi-gold);
+  border-radius: 50%;
+  background: var(--pi-guinda-bright);
+  color: var(--pi-gold);
+  cursor: pointer;
+  transition: background-color .3s, color .3s, transform .3s;
+}
+.pi-modal__close:hover {
+  background: var(--pi-gold);
+  color: var(--pi-night);
+  transform: rotate(90deg);
+}
+.pi-modal__close:focus-visible {
+  outline: 3px solid var(--pi-gold);
+  outline-offset: 3px;
+}
+
+/* Bloquea el scroll de la página mientras el modal está abierto (lo gestiona main.js). */
+body.modal-open { overflow: hidden; }
+
+/* Ajustes para pantallas pequeñas (móviles). */
+@media (max-width: 480px) {
+  .pi-modal { padding: 16px; }
+  .pi-modal__content { max-height: 82vh; }
+  .pi-modal__image { max-height: 82vh; }
+  .pi-modal__close { top: -12px; right: -12px; width: 40px; height: 40px; }
+}
+
+@keyframes pi-modal-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes pi-modal-rise {
+  from { opacity: 0; transform: translateY(16px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Respeta la preferencia de movimiento reducido del usuario. */
+@media (prefers-reduced-motion: reduce) {
+  .pi-modal__overlay,
+  .pi-modal__content { animation: none; }
+  .pi-modal__close:hover { transform: none; }
+}
+
 /* Utils */
 .mt-4 { margin-top: 16px; } .mt-6 { margin-top: 24px; } .mt-8 { margin-top: 32px; }
 .mt-10 { margin-top: 40px; } .mt-14 { margin-top: 56px; } .mt-16 { margin-top: 64px; }
